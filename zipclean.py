@@ -5,6 +5,9 @@ import logging
 import json
 import sys
 import os
+from collections import Counter
+
+from zipbase import US_ZIP
 
 from progressbar import ProgressBar, AnimatedMarker, Percentage, ETA
 
@@ -30,6 +33,16 @@ def main():
             help='the filename of the guides for which content is to be'\
                     ' published. It defaults to the naming convention for'\
                     ' guide filenames which is result.json',
+            type = str,
+            default='result.json'
+            )
+
+    parser.add_argument(
+            '-f',
+            '--frequency',
+            help='the frequency (in occurence per guide) at which a certain '\
+                    '5 number digit needs to appear in a guide to be'\
+                    'considered a zipcode.',
             type = str,
             default='result.json'
             )
@@ -78,7 +91,7 @@ def main():
 
     config_logger(args.log_file, args.message_debug)
 
-    zipclean(args.path, args.guide_name)
+    zipclean(args.path, args.guide_name, args.frequency)
     return
 
 def die(msg, err_code=-1):
@@ -108,7 +121,7 @@ def config_logger(filename, debug):
 
     return
 
-def zipclean(path, guide_name):
+def zipclean(path, guide_name, frequency):
     """
     remove zip code from US postal addresses when they are found in mtrip
     guide.
@@ -133,7 +146,7 @@ def zipclean(path, guide_name):
             logging.error("could not load content from {0}".format(g))
             continue
 
-        clean_guide_data = clean_guide(guide_data)
+        clean_guide_data = clean_guide(guide_data, frequency)
         with open(g, 'w') as guide:
             json.dump(clean_guide_data, guide)
 
@@ -142,27 +155,112 @@ def zipclean(path, guide_name):
     logging.info('zipcode cleaning from directory {0} finished'.format(path))
     return
 
-def clean_guide(guide_data):
+def clean_guide(guide_data, frequency):
     """
     Removes the zipcode from the guide and return a new guide without them.
     """
 
-    return guide_data
+    zipcodes = gather_zipcodes(guide_data, frequency)
+    clean_guide = remove_zip(guide_data, zipcodes)
 
-def gather_zipcodes(guide):
+    return clean_guide
+
+def remove_zip(guide_data, zipcodes):
+    """
+    modify the guide_data so that the strings in the zipcodes set are removed
+    from addresses.
+    """
+
+    # addresses are located in pois.
+    pois = None
+    try:
+        pois = guide['Cities'][0]['pois']
+    except:
+        logging.warning("tried to process a guide without pois")
+        return None
+
+    for poi in pois:
+        try:
+            address = poi['address']['address']
+            components = address.split()
+            new_components = [c for c in components if not c in zipcodes]
+            new_address = " ".join(new_compenents)
+            poi['address']['address'] = new_address
+        except KeyError:
+            pass
+
+    return
+
+def gather_zipcodes(guide, frequency):
     """
     Open a guide and gather zipcodes from the guide. Return a set of
     those zipcodes.
     """
 
-    widgets = ['extracting editorial content for the guides:',
-               AnimatedMarker(markers='◐◓◑◒'),
-               Percentage(),
-               ETA()]
+    addresses = list_addresses(guide)
+    zip_candidates = list_zip_candidate(addresses)
 
-    pbar = ProgressBar(widgets=widgets,maxval=len(guides)).start()
-    result = set()
+    zip_frequency = Counter(zip_candidates)
+
+    # only keep the zip that are occuring with a frequency that is greater
+    # then the frequency argument.
+    result = {code for code, freq in zip_frequency if freq >= frequency}
     return result
+
+def list_zip_candidate(addresses):
+    """
+    returns a list of potential zipcodes. A zip code is a 5 character num
+    substring foud inside an address.
+    """
+
+    result = []
+    def extract_zip(address):
+        components = address.split()
+        zip_candidates = [c for c in components if iszipcode(c)]
+        return zip_candidates
+
+    for address in addresses:
+        candidates = extract_zip(address)
+        result.extend(candidates)
+
+    return result
+
+def iszipcode(s):
+    """
+    return true if the given string s is considered to be a us zipcode or
+    false otherwise.
+    """
+
+
+    # string is a zipcode IF it's in the giant zipcode database.
+    result = s in US_ZIP
+    return result
+
+def list_addresses(guide):
+    """
+    return a list of all addresses string in a guide.
+    """
+
+    # addresses are located in pois.
+    pois = None
+    try:
+        pois = guide['Cities'][0]['pois']
+    except:
+        logging.warning("tried to process a guide without pois")
+        return None
+
+    addresses = [addr(p) for p in pois if addr(p)]
+
+def addr(poi):
+    """
+    return the address string from the poi structure if it exists.
+    """
+
+    addr = None
+    try:
+        addr = poi['address']['address']
+    finally:
+        return addr
 
 def guide_file(path,guide_name):
     """ Return the json filename guide found in path. None if it cannot be
@@ -191,6 +289,12 @@ def list_guide(path, guide_name):
         guide_name)]
 
     return guides
+
+######################### THINGS USED FOR TESTING #############################
+test_guide_data = {}
+
+clean_guide_ex = {}
+
 
 if __name__ == '__main__':
     main()
