@@ -1,0 +1,234 @@
+{
+    "Cities": [
+        {
+            "center": [
+                42.358333,
+                -71.060278
+            ],
+            "pois": [
+                {
+                    "homepage": {
+                        "homepage": "http://www.milkstreetcafe.com",
+                        "source": {
+                            "source": "mtrip"
+                        }
+                    },
+                    "subcategory": "american",
+                    "location": {
+                        "latitude": 42.3568306,
+                        "source": {
+                            "id": 116635565,
+                            "source": "Foursquare",
+                            "url": "https://foursquare.com/v/4b479113f964a520cd3526e3"
+                        },
+                        "longitude": -71.05747223
+                    },
+                    "duration": null,
+                    "prices": {
+                        "prices": [
+
+                        ]
+                    },
+                    "ranking": 484,
+                    "name": {
+                        "source": {
+                            "source": "mtrip"
+                        },
+                        "name": "Milk Street Cafe 1"
+                    },
+                    "opening_hours": {
+                        "opening_hours": [
+
+                        ]
+                    },
+                    "picture": {
+                        "source": {
+                            "id": 13016066,
+                            "source": "Facebook",
+                            "url": "https://facebook.com/101542929891619"
+                        },
+                        "picture": "656edb4a12b66b3961d2a5ee1fb8c069f8c0808f.jpg"
+                    },
+                    "mtrip": null,
+                    "alternate_names": {
+
+                    },
+                    "price_range": null,
+                    "address": {
+                        "source": {
+                            "source": "mtrip"
+                        },
+                        "address": "51 Milk St"
+                    }
+                },
+                    {
+                    "homepage": {
+                        "homepage": "http://www.milkstreetcafe.com",
+                        "source": {
+                            "source": "mtrip"
+                        }
+                    },
+                    "subcategory": "american",
+                    "location": {
+                        "latitude": 42.3568306,
+                        "source": {
+                            "id": 116635565,
+                            "source": "Foursquare",
+                            "url": "https://foursquare.com/v/4b479113f964a520cd3526e3"
+                        },
+                        "longitude": -71.05747223
+                    },
+                    "duration": null,
+                    "prices": {
+                        "prices": [
+
+                        ]
+                    },
+                    "ranking": 484,
+                    "name": {
+                        "source": {
+                            "source": "mtrip"
+                        },
+                        "name": "Milk Street Cafe"
+                    },
+                    "opening_hours": {
+                        "opening_hours": [
+
+                        ]
+                    },
+                    "picture": {
+                        "source": {
+                            "id": 13016066,
+                            "source": "Facebook",
+                            "url": "https://facebook.com/101542929891619"
+                        },
+                        "picture": "656edb4a12b66b3961d2a5ee1fb8c069f8c0808f.jpg"
+                    },
+                    "mtrip": null,
+                    "alternate_names": {
+
+                    },
+                    "price_range": null,
+                    "address": {
+                        "source": {
+                            "source": "mtrip"
+                        },
+                        "address": "52 Milk St"
+                    }
+                  },
+
+                {
+                    "homepage": {
+                        "homepage": "http://www.milkstreetcafe.com",
+                        "source": {
+                            "source": "mtrip"
+                        }
+                    },
+                    "subcategory": "american",
+                    "location": {
+                        "latitude": 42.3568306,
+                        "source": {
+                            "id": 116635565,
+                            "source": "Foursquare",
+                            "url": "https://foursquare.com/v/4b479113f964a520cd3526e3"
+                        },
+                        "longitude": -71.05747223
+                    },
+                    "duration": null,
+                    "prices": {
+                        "prices": [
+
+                        ]
+                    },
+                    "ranking": 484,
+                    "name": {
+                        "source": {
+                            "source": "mtrip"
+                        },
+                        "name": "Milk Street Cafe"
+                    },
+                    "opening_hours": {
+                        "opening_hours": [
+
+                        ]
+                    },
+                    "picture": {
+                        "source": {
+                            "id": 13016066,
+                            "source": "Facebook",
+                            "url": "https://facebook.com/101542929891619"
+                        },
+                        "picture": "656edb4a12b66b3961d2a5ee1fb8c069f8c0808f.jpg"
+                    },
+                    "mtrip": null,
+                    "alternate_names": {
+
+                    },
+                    "price_range": null,
+                    "address": {
+                        "source": {
+                            "source": "mtrip"
+                        },
+                        "address": "53 Milk St"
+                    }
+                },
+
+                {
+                    "homepage": {
+                        "homepage": "http://www.milkstreetcafe.com",
+                        "source": {
+                            "source": "mtrip"
+                        }
+                    },
+                    "subcategory": "american",
+                    "location": {
+                        "latitude": 42.3568306,
+                        "source": {
+                            "id": 116635565,
+                            "source": "Foursquare",
+                            "url": "https://foursquare.com/v/4b479113f964a520cd3526e3"
+                        },
+                        "longitude": -71.05747223
+                    },
+                    "duration": null,
+                    "prices": {
+                        "prices": [
+
+                        ]
+                    },
+                    "ranking": 484,
+                    "name": {
+                        "source": {
+                            "source": "mtrip"
+                        },
+                        "name": "Milk Street Cafe"
+                    },
+                    "opening_hours": {
+                        "opening_hours": [
+
+                        ]
+                    },
+                    "picture": {
+                        "source": {
+                            "id": 13016066,
+                            "source": "Facebook",
+                            "url": "https://facebook.com/101542929891619"
+                        },
+                        "picture": "656edb4a12b66b3961d2a5ee1fb8c069f8c0808f.jpg"
+                    },
+                    "mtrip": null,
+                    "alternate_names": {
+
+                    },
+                    "price_range": null,
+                    "address": {
+                        "source": {
+                            "source": "mtrip"
+                        },
+                        "address": "54 Milk St"
+                    }
+                }
+            ]
+        }
+    ]
+}

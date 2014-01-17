@@ -24,7 +24,6 @@ def main():
     parser.add_argument(
             'path',
             help='root directory that contain all the guides',
-            nargs='?'
             )
 
     parser.add_argument(
@@ -37,14 +36,15 @@ def main():
             default='result.json'
             )
 
+    default_frequency = 1
     parser.add_argument(
             '-f',
             '--frequency',
             help='the frequency (in occurence per guide) at which a certain '\
                     '5 number digit needs to appear in a guide to be'\
                     'considered a zipcode.',
-            type = str,
-            default='result.json'
+            type = int,
+            default=default_frequency
             )
 
     parser.add_argument(
@@ -174,22 +174,24 @@ def remove_zip(guide_data, zipcodes):
     # addresses are located in pois.
     pois = None
     try:
-        pois = guide['Cities'][0]['pois']
-    except:
+        pois = guide_data['Cities'][0]['pois']
+    except KeyError:
         logging.warning("tried to process a guide without pois")
-        return None
+        return guide_data
 
     for poi in pois:
         try:
             address = poi['address']['address']
             components = address.split()
             new_components = [c for c in components if not c in zipcodes]
-            new_address = " ".join(new_compenents)
+            if len(new_components) > 0 and new_components[-1].isdigit():
+                new_components = new_components[:-1]
+            new_address = " ".join(new_components)
             poi['address']['address'] = new_address
         except KeyError:
             pass
 
-    return
+    return guide_data
 
 def gather_zipcodes(guide, frequency):
     """
@@ -204,7 +206,8 @@ def gather_zipcodes(guide, frequency):
 
     # only keep the zip that are occuring with a frequency that is greater
     # then the frequency argument.
-    result = {code for code, freq in zip_frequency if freq >= frequency}
+    result = {code for code in zip_frequency if
+            zip_frequency[code] >= frequency}
     return result
 
 def list_zip_candidate(addresses):
@@ -231,7 +234,6 @@ def iszipcode(s):
     false otherwise.
     """
 
-
     # string is a zipcode IF it's in the giant zipcode database.
     result = s in US_ZIP
     return result
@@ -247,9 +249,10 @@ def list_addresses(guide):
         pois = guide['Cities'][0]['pois']
     except:
         logging.warning("tried to process a guide without pois")
-        return None
+        return []
 
     addresses = [addr(p) for p in pois if addr(p)]
+    return addresses
 
 def addr(poi):
     """
@@ -289,12 +292,6 @@ def list_guide(path, guide_name):
         guide_name)]
 
     return guides
-
-######################### THINGS USED FOR TESTING #############################
-test_guide_data = {}
-
-clean_guide_ex = {}
-
 
 if __name__ == '__main__':
     main()
