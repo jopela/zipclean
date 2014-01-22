@@ -121,7 +121,7 @@ def config_logger(filename, debug):
 
     return
 
-def zipclean(path, guide_name, frequency):
+def zipclean(path, guide_name, frequency=1):
     """
     remove zip code from US postal addresses when they are found in mtrip
     guide.
@@ -137,13 +137,21 @@ def zipclean(path, guide_name, frequency):
         logging.warning(msg)
         die(msg)
 
-    for g in guide_filenames:
+    widgets = ['cleaning up zipcodes from addresses:',
+               AnimatedMarker(markers='←↖↑↗→↘↓↙'),
+               Percentage(),
+               ETA()]
+
+    error = False
+    pbar = ProgressBar(widgets=widgets, maxval=len(guide_filenames)).start()
+    for i,g in enumerate(guide_filenames):
         guide_data = None
         with open(g,'r') as guide:
             guide_data = json.load(guide)
 
         if not guide_data:
             logging.error("could not load content from {0}".format(g))
+            error = True
             continue
 
         clean_guide_data = clean_guide(guide_data, frequency)
@@ -151,9 +159,10 @@ def zipclean(path, guide_name, frequency):
             json.dump(clean_guide_data, guide)
 
         logging.info('zipcode cleaning for {0} done'.format(g))
+        pbar.update(i+1)
 
     logging.info('zipcode cleaning from directory {0} finished'.format(path))
-    return
+    return error
 
 def clean_guide(guide_data, frequency):
     """
@@ -184,6 +193,7 @@ def remove_zip(guide_data, zipcodes):
             address = poi['address']['address']
             components = address.split()
             new_components = [c for c in components if not c in zipcodes]
+            #part of zipcodes are also the digits at the end of new_components.
             if len(new_components) > 0 and new_components[-1].isdigit():
                 new_components = new_components[:-1]
             new_address = " ".join(new_components)
