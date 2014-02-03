@@ -198,7 +198,7 @@ def remove_zip(guide_data, zipcodes):
                 new_components = new_components[:-1]
             new_address = " ".join(new_components)
             poi['address']['address'] = new_address
-        except KeyError:
+        except:
             pass
 
     return guide_data
