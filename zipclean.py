@@ -137,11 +137,6 @@ def zipclean(path, guide_name, frequency=1):
         logging.warning(msg)
         die(msg)
 
-    widgets = ['cleaning up zipcodes from addresses:',
-               AnimatedMarker(markers='←↖↑↗→↘↓↙'),
-               Percentage(),
-               ETA()]
-
     error = False
     pbar = Bar('filtering the guides poi with a function.',max=len(guide_filenames))
     pbar.start()
