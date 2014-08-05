@@ -9,7 +9,7 @@ from collections import Counter
 
 from zipbase import US_ZIP
 
-from progressbar import ProgressBar, AnimatedMarker, Percentage, ETA
+from progress.bar import Bar
 
 # TODO: some function (e.g: list_guide) are used in more then one modules
 # (e.g: publish and zipclean). In the future these function should be
@@ -143,7 +143,8 @@ def zipclean(path, guide_name, frequency=1):
                ETA()]
 
     error = False
-    pbar = ProgressBar(widgets=widgets, maxval=len(guide_filenames)).start()
+    pbar = Bar('filtering the guides poi with a function.',max=len(guide_filenames))
+    pbar.start()
     for i,g in enumerate(guide_filenames):
         guide_data = None
         with open(g,'r') as guide:
@@ -159,7 +160,7 @@ def zipclean(path, guide_name, frequency=1):
             json.dump(clean_guide_data, guide)
 
         logging.info('zipcode cleaning for {0} done'.format(g))
-        pbar.update(i+1)
+        pbar.next()
 
     logging.info('zipcode cleaning from directory {0} finished'.format(path))
     return error
